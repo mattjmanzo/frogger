@@ -10,6 +10,11 @@ function drawFrog() {
   ctx.drawImage(frogImage, frog.x, frog.y, frog.width, frog.height);
 }
 
+// define variable of level at level 0
+// write function increaseLevel so that once y coordinate of frog >= y coordinate of edge of highway, move onto next level --> level++
+
+// write a reset function that clears cars array and updates frog coordinates to initial coordinates
+
 const frog = {
   x: canvas.width / 2 - 75,
   y: canvas.height - 150,
@@ -20,9 +25,13 @@ const frog = {
 const carImage = new Image();
 carImage.src = "car.png";
 // carImage.onload = animate;
-function drawCar() {
+function drawCar(car) {
   car.x += car.speed;
   ctx.drawImage(carImage, car.x, car.y, car.width, car.height);
+}
+
+function drawCars() {
+  cars.forEach((car) => drawCar(car));
 }
 
 const cars = [];
@@ -32,17 +41,9 @@ setInterval(function () {
     y: 150 * Math.floor(Math.random() * 3),
     width: 50,
     height: 50,
-    speed: Math.random() * 10,
+    speed: 5 + Math.random() * 10,
   });
 }, 3000);
-
-const car = {
-  x: 0,
-  y: 300,
-  width: 50,
-  height: 50,
-  speed: 5,
-};
 
 function drawHighway() {
   ctx.fillStyle = "gray";
@@ -81,6 +82,6 @@ function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawHighway();
   drawFrog();
-  drawCar();
+  drawCars();
   console.log("hi");
 }
