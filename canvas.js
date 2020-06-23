@@ -1,7 +1,7 @@
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 canvas.height = window.innerHeight / 1.2;
-canvas.width = window.innerWidth / 1.2;
+canvas.width = window.innerWidth;
 
 const frogImage = new Image();
 frogImage.src = "frog.png";
@@ -10,10 +10,17 @@ function drawFrog() {
   ctx.drawImage(frogImage, frog.x, frog.y, frog.width, frog.height);
 }
 
-// define variable of level at level 0
-// write function increaseLevel so that once y coordinate of frog >= y coordinate of edge of highway, move onto next level --> level++
+let level = 1;
 
-// write a reset function that clears cars array and updates frog coordinates to initial coordinates
+function passLevel() {
+  if (frog.y + frog.height < canvas.height / 9) {
+    level++;
+    setTimeout(() => {
+      frog.x = canvas.width / 2 - 75;
+      frog.y = canvas.height - 150;
+    }, 500);
+  }
+}
 
 const frog = {
   x: canvas.width / 2 - 75,
@@ -23,7 +30,7 @@ const frog = {
 };
 
 const carImage = new Image();
-carImage.src = "car.png";
+carImage.src = "car.jpeg";
 // carImage.onload = animate;
 function drawCar(car) {
   car.x += car.speed;
@@ -36,20 +43,47 @@ function drawCars() {
 
 const cars = [];
 setInterval(function () {
+  let start = canvas.height / 9;
+  let laneHeight = canvas.height / 1.4 / 4;
   cars.push({
     x: 0,
-    y: 150 * Math.floor(Math.random() * 3),
+    y: start + laneHeight * Math.floor(Math.random() * 4) + laneHeight / 2 - 25,
     width: 50,
     height: 50,
-    speed: 5 + Math.random() * 10,
+    speed: 5 + Math.random() * 2 + level * 1.01,
   });
-}, 3000);
+}, 1000);
 
 function drawHighway() {
-  ctx.fillStyle = "gray";
-  ctx.fillRect(0, canvas.height / 4, canvas.width, canvas.height / 2);
+  ctx.fillStyle = "#3a4049";
+  ctx.fillRect(0, canvas.height / 9, canvas.width, canvas.height / 1.4);
 }
-// Use switch keys - up, down, left, right and spacebar (to jump) to allow the frog to move
+
+function drawPond() {
+  ctx.fillStyle = "#add8e6";
+  ctx.fillRect(0, 0, canvas.width, canvas.height / 4);
+}
+
+function drawLanes() {
+  let start = canvas.height / 9;
+  let laneHight = canvas.height / 1.4 / 4;
+  ctx.fillStyle = "#FFF";
+  for (let i = 1; i < 4; i++) {
+    for (let j = 0; j < 15; j++) {
+      ctx.fillRect(
+        j * (canvas.width / 15) + j * 15 + (i % 2) * 15,
+        start + laneHight * i,
+        canvas.width / 15,
+        5
+      );
+    }
+  }
+}
+
+function drawGrass() {
+  ctx.fillStyle = "#50C878";
+  ctx.fillRect(0, 585, canvas.width, canvas.height / 4);
+}
 
 document.body.onkeydown = function (event) {
   console.log(event.key);
@@ -76,12 +110,14 @@ document.body.onkeydown = function (event) {
   }
 };
 
-// Create animation loop with cars going left to right across 4 lines at randomized times
 function animate() {
   window.requestAnimationFrame(animate);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawPond();
   drawHighway();
+  drawLanes();
+  drawGrass();
   drawFrog();
   drawCars();
-  console.log("hi");
+  passLevel();
 }
