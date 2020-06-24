@@ -3,6 +3,12 @@ const ctx = canvas.getContext("2d");
 canvas.height = window.innerHeight / 1.2;
 canvas.width = window.innerWidth;
 
+const livesDOM = document.querySelector(".lives span");
+
+const levelDOM = document.querySelector(".level span");
+
+let leveled = false;
+
 const frogImage = new Image();
 frogImage.src = "frog.png";
 frogImage.onload = animate;
@@ -11,14 +17,22 @@ function drawFrog() {
 }
 
 let level = 1;
+let lives = 5;
 
 function passLevel() {
   if (frog.y + frog.height < canvas.height / 9) {
     level++;
+    leveled = true;
     setTimeout(() => {
       frog.x = canvas.width / 2 - 75;
       frog.y = canvas.height - 150;
+      leveled = false;
     }, 500);
+    if (level == 6) {
+      alert("You Won! Congratulations!");
+      location.reload();
+    }
+    levelDOM.innerText = level;
   }
 }
 
@@ -30,7 +44,7 @@ const frog = {
 };
 
 const carImage = new Image();
-carImage.src = "car.jpeg";
+carImage.src = "car.png";
 // carImage.onload = animate;
 function drawCar(car) {
   car.x += car.speed;
@@ -42,6 +56,7 @@ function drawCars() {
 }
 
 const cars = [];
+// creates a new car every 1000 milliseconds
 setInterval(function () {
   let start = canvas.height / 9;
   let laneHeight = canvas.height / 1.4 / 4;
@@ -50,7 +65,7 @@ setInterval(function () {
     y: start + laneHeight * Math.floor(Math.random() * 4) + laneHeight / 2 - 25,
     width: 50,
     height: 50,
-    speed: 5 + Math.random() * 2 + level * 1.01,
+    speed: 1 + level,
   });
 }, 1000);
 
@@ -82,7 +97,7 @@ function drawLanes() {
 
 function drawGrass() {
   ctx.fillStyle = "#50C878";
-  ctx.fillRect(0, 585, canvas.width, canvas.height / 4);
+  ctx.fillRect(0, 545, canvas.width, canvas.height / 4);
 }
 
 document.body.onkeydown = function (event) {
@@ -90,25 +105,42 @@ document.body.onkeydown = function (event) {
 
   switch (event.key) {
     case "ArrowLeft":
-      frog.x -= 10;
+      frog.x -= 40;
       break;
 
     case "ArrowRight":
-      frog.x += 10;
+      frog.x += 40;
       break;
 
     case "ArrowUp":
-      frog.y -= 10;
+      frog.y -= 40;
       break;
 
     case "ArrowDown":
-      frog.y += 10;
-      break;
-
-    case " ":
+      frog.y += 40;
       break;
   }
 };
+
+function collisionDetection() {
+  cars.forEach((car) => {
+    if (
+      frog.x <= car.x + car.width - 30 && // collision of frog if hit on left side
+      frog.x + frog.width >= car.x + 30 && // collision of frog if hit on right side
+      frog.y <= car.y + car.height - 30 && // collision of frog if hit on top side
+      frog.y + frog.height >= car.y - 30 // collision of frog if hit on bottom side
+    ) {
+      frog.x = canvas.width / 2 - 75;
+      frog.y = canvas.height - 150;
+      lives--;
+      if (lives == 0) {
+        alert("Game Over! Try Again!");
+        location.reload();
+      }
+      livesDOM.innerText = lives;
+    }
+  });
+}
 
 function animate() {
   window.requestAnimationFrame(animate);
@@ -119,5 +151,6 @@ function animate() {
   drawGrass();
   drawFrog();
   drawCars();
-  passLevel();
+  if (!leveled) passLevel();
+  collisionDetection();
 }

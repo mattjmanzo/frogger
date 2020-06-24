@@ -12,3 +12,12 @@ h1 {
   font-size: 120px;
   color: white;
 }
+
+ul {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  font-size: 35px;
+  list-style-type: none;
+}
