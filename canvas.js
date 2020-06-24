@@ -65,7 +65,7 @@ setInterval(function () {
     y: start + laneHeight * Math.floor(Math.random() * 4) + laneHeight / 2 - 25,
     width: 50,
     height: 50,
-    speed: 1 + level,
+    speed: 1 + level * 1.5,
   });
 }, 1000);
 

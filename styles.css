@@ -1,11 +1,10 @@
 body {
-  /* background-color: green; */
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
   height: 100vh;
   overflow: hidden;
+  background-color: #149414;
 }
 
 h1 {
@@ -20,4 +19,19 @@ ul {
   justify-content: space-around;
   font-size: 35px;
   list-style-type: none;
+}
+
+.welcome {
+  color: white;
+}
+
+h2 {
+  font-size: 30px;
+  text-align: center;
+  padding: 10%;
+  color: white;
+}
+
+button {
+  font-size: 15px;
 }
