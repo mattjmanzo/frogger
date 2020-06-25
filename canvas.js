@@ -65,7 +65,7 @@ setInterval(function () {
     y: start + laneHeight * Math.floor(Math.random() * 4) + laneHeight / 2 - 25,
     width: 50,
     height: 50,
-    speed: 1 + level * 1.5,
+    speed: 1 + 1.5 * level,
   });
 }, 1000);
 
@@ -97,7 +97,7 @@ function drawLanes() {
 
 function drawGrass() {
   ctx.fillStyle = "#50C878";
-  ctx.fillRect(0, 545, canvas.width, canvas.height / 4);
+  ctx.fillRect(0, 580, canvas.width, canvas.height / 4);
 }
 
 document.body.onkeydown = function (event) {
@@ -125,9 +125,9 @@ document.body.onkeydown = function (event) {
 function collisionDetection() {
   cars.forEach((car) => {
     if (
-      frog.x <= car.x + car.width - 30 && // collision of frog if hit on left side
-      frog.x + frog.width >= car.x + 30 && // collision of frog if hit on right side
-      frog.y <= car.y + car.height - 30 && // collision of frog if hit on top side
+      frog.x <= car.x + car.width - 35 && // collision of frog if hit on left side - this is good
+      frog.x + frog.width >= car.x + 50 && // collision of frog if hit on right side - this is good
+      frog.y <= car.y + car.height - 60 && // collision of frog if hit on top side - this is good
       frog.y + frog.height >= car.y - 30 // collision of frog if hit on bottom side
     ) {
       frog.x = canvas.width / 2 - 75;

@@ -21,17 +21,28 @@ ul {
   list-style-type: none;
 }
 
-.welcome {
+.flex {
+  width: 100vw;
+  height: 100vh;
   color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 h2 {
   font-size: 30px;
   text-align: center;
-  padding: 10%;
+  width: 75vw;
+}
+
+.level,
+.lives {
   color: white;
 }
 
-button {
-  font-size: 15px;
+.button {
+  margin: 60px;
+  font-size: 25px;
 }
